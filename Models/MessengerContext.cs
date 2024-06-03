@@ -1,23 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Proxies;
-using Microsoft.EntityFrameworkCore.SqlServer;
-using System.Reflection.Emit;
 
 namespace MessengerApplication.Models
 {
-    public class MessengerContext : DbContext
+    public partial class MessengerContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        //private string _connectingString;
+        private string _connectionString;
 
+        //public MessengerContext()
+        //{
+        //    Database.EnsureCreated();
+        //}
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseNpgsql("Host=localhost;Port=9150;Database=PostgreSQL16;Username=postgres;Password=9150")
+        //.UseLazyLoadingProxies();
+        //}
         public MessengerContext()
         {
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public MessengerContext(string connectionString)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=gb;Integrated Security=True;TrustServerCertificate=True;Trusted_Connection=True;")
-                .UseLazyLoadingProxies();
+            _connectionString = connectionString;
         }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseNpgsql(_connectionString);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,5 +46,5 @@ namespace MessengerApplication.Models
             //OnModelCreatingPartial(modelBuilder);
         }
     }
-   // partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

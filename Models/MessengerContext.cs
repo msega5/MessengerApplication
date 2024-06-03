@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MessengerApplication.Models
 {
@@ -45,6 +46,9 @@ namespace MessengerApplication.Models
 
             //OnModelCreatingPartial(modelBuilder);
         }
+
+        //Jwt
+        //IssuerSigningKey = new RsaSecurityKey(GetPublicKey()) вместо Jwt key
     }
     //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

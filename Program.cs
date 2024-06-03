@@ -4,6 +4,7 @@ using Autofac;
 using MessengerApplication.Abstraction;
 using MessengerApplication.Repo;
 using MessengerApplication.Models;
+using System.Security.Cryptography;
 
 namespace MessengerApplication
 {
@@ -52,6 +53,14 @@ namespace MessengerApplication
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             app.Run();
+
+            static RSA GetPublicKey()
+            {
+                var f = File.ReadAllText("rsa/public_key.pem");
+                var rsa = RSA.Create();
+                rsa.ImportFromPem(f);
+                return rsa;
+            }
         }
     }
 }

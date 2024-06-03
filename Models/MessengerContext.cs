@@ -42,13 +42,11 @@ namespace MessengerApplication.Models
                 entity.Property(e => e.Registered).HasColumnName("registered");
                 entity.Property(e => e.Active).HasColumnName("active");
                 entity.Property(e => e.Password).HasColumnName("password");
+                entity.Property(e => e.Role).HasColumnName("role");
             });
 
             //OnModelCreatingPartial(modelBuilder);
-        }
-
-        //Jwt
-        //IssuerSigningKey = new RsaSecurityKey(GetPublicKey()) вместо Jwt key
+        }        
     }
     //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

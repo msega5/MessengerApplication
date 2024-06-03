@@ -8,7 +8,7 @@ namespace MessengerApplication.rsa
         {
             var f = File.ReadAllText("private_key.pem");
             var rsa = RSA.Create();
-            rsa.ImportParameters(f);
+            rsa.ImportFromPem(f);
             return rsa;
         }
     }

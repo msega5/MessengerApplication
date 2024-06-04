@@ -17,9 +17,7 @@ namespace MessengerApplication.Models
         //    optionsBuilder.UseNpgsql("Host=localhost;Port=9150;Database=PostgreSQL16;Username=postgres;Password=9150")
         //.UseLazyLoadingProxies();
         //}
-        public MessengerContext()
-        {
-        }
+        
         public MessengerContext(string connectionString)
         {
             _connectionString = connectionString;

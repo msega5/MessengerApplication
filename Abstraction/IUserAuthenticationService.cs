@@ -2,7 +2,7 @@
 
 namespace MessengerApplication.Abstraction
 {
-    public interface IUserAuthentificationService
+    public interface IUserAuthenticationService
     {
         User Authenticate(UserLogin model);
     }

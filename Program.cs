@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Server.HttpSys;
 
 namespace MessengerApplication
 {
@@ -47,9 +48,22 @@ namespace MessengerApplication
                     IssuerSigningKey = new RsaSecurityKey(GetPublicKey())
                 };
             });
+            builder.Services.AddScoped<IUserAuthenticationService, AuthenticationMock>();
+
 
             return builder.Build();
         }
+
+
+        static RSA GetPublicKey()
+        {
+            var f = File.ReadAllText("rsa/public_key.pem");
+            var rsa = RSA.Create();
+            rsa.ImportFromPem(f);
+            return rsa;
+        }
+
+
 
         public static void Main(string[] args)
         {
@@ -72,13 +86,8 @@ namespace MessengerApplication
 
             app.Run();
 
-            static RSA GetPublicKey()
-            {
-                var f = File.ReadAllText("rsa/public_key.pem");
-                var rsa = RSA.Create();
-                rsa.ImportFromPem(f);
-                return rsa;
-            }
+            
         }
+
     }
 }

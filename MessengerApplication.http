@@ -2,5 +2,3 @@
 
 GET {{MessengerApplication_HostAddress}}/weatherforecast/
 Accept: application/json
-
-###

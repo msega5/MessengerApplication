@@ -1,15 +1,10 @@
-
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using MessengerApplication.Abstraction;
 using MessengerApplication.Repo;
-using MessengerApplication.Models;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.AspNetCore.Server.HttpSys;
-using MessengerApplication.Mock;
 
 namespace MessengerApplication
 {
@@ -33,7 +28,6 @@ namespace MessengerApplication
             builder.Host.ConfigureContainer<ContainerBuilder>(contaierBuilder =>
             {
                 contaierBuilder.RegisterType<UserRepository>().As<IUserRepository>();
-               // contaierBuilder.Register(c => new MessengerContext(cfg.GetConnectionString("db"))).InstancePerDependency();
             });
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -49,13 +43,10 @@ namespace MessengerApplication
                     IssuerSigningKey = new RsaSecurityKey(GetPublicKey())
                 };
             });
-            //builder.Services.AddScoped<IUserAuthenticationService, AuthenticationMock>();
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
-
             return builder.Build();
         }
-
 
         static RSA GetPublicKey()
         {
@@ -64,8 +55,6 @@ namespace MessengerApplication
             rsa.ImportFromPem(f);
             return rsa;
         }
-
-
 
         public static void Main(string[] args)
         {
@@ -78,18 +67,11 @@ namespace MessengerApplication
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
-
             app.MapControllers();
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
-            app.Run();
-
-            
+            app.Run();            
         }
-
     }
 }

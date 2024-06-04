@@ -1,14 +1,12 @@
 ﻿using MessengerApplication.Abstraction;
 using MessengerApplication.Models;
-using MessengerApplication.Repo;
 using MessengerApplication.rsa;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
+
 
 namespace MessengerApplication.Controllers
 {
@@ -17,15 +15,12 @@ namespace MessengerApplication.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration _config;
-        //private readonly IUserAuthenticationService _authenticationService;
         private readonly IUserRepository _userRepository;
 
         public LoginController(IConfiguration config,
-                                //IUserAuthenticationService service,
                                 IUserRepository userRepository)
         {
             _config = config;
-            //_authenticationService = service;
             _userRepository = userRepository;
         }
 
@@ -91,7 +86,6 @@ namespace MessengerApplication.Controllers
 
         private string GenerateToken(User user)
         {
-            //var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var securityKey = new RsaSecurityKey(RSATools.GetPrivateKey());
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.RsaSha256Signature);
             var claims = new[]

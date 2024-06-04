@@ -25,7 +25,7 @@ namespace MessengerApplication.Models
         //}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Username=postgres;Password=9150;Database=PostgreSQL16");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=9150;Database=PostgreSQL16;Username=postgres;Password=9150");
         //.UseLazyLoadingProxies();
         }
 

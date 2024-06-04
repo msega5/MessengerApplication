@@ -16,18 +16,18 @@ namespace MessengerApplication.Controllers
             _repository = repository;
         }
 
-        [HttpPost(template: "AddUser")]
-        public ActionResult AddUser(UserDTO user)
-        {
-            _repository.AddUser(user);
+        //[HttpPost(template: "UserAdd")]
+        //public ActionResult UserAdd(UserDTO user)
+        //{
+        //    _repository.UserAdd(user);
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
-        [HttpGet(template: "Exists")]
-        public ActionResult<bool> Exists(string email)
-        {
-            return Ok(_repository.Exists(email));
-        }
+        //[HttpGet(template: "Exists")]
+        //public ActionResult<bool> Exists(string email)
+        //{
+        //    return Ok(_repository.Exists(email));
+        //}
     }
 }

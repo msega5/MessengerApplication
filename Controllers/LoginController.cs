@@ -1,7 +1,9 @@
 ﻿using MessengerApplication.Abstraction;
 using MessengerApplication.Models;
+using MessengerApplication.Repo;
 using MessengerApplication.rsa;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,12 +17,22 @@ namespace MessengerApplication.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration _config;
-        private readonly IUserAuthenticationService _authenticationService;
+        //private readonly IUserAuthenticationService _authenticationService;
+        private readonly IUserRepository _userRepository;
 
-        public LoginController(IConfiguration config, IUserAuthenticationService service)
+        public LoginController(IConfiguration config,
+                                //IUserAuthenticationService service,
+                                IUserRepository userRepository)
         {
             _config = config;
-            _authenticationService = service;
+            //_authenticationService = service;
+            _userRepository = userRepository;
+        }
+
+        private RoleId RoleIDToRole(RoleId roleId)
+        {
+            if (roleId == RoleId.Admin) return RoleId.Admin;
+            return RoleId.User;
         }
 
 
@@ -28,14 +40,52 @@ namespace MessengerApplication.Controllers
         [HttpPost]
         public ActionResult Login([FromBody] UserLogin userLogin)
         {
-            var user = _authenticationService.Authenticate(userLogin);
-            if (user != null)
-            { 
-            var token = GenerateToken(user);
+            try
+            {
+                var roleId = _userRepository.UserCheck(userLogin.Email, userLogin.Password);
+                var user = new User { Email = userLogin.Email, RoleId = RoleIDToRole(roleId) };
+                var token = GenerateToken(user);
                 return Ok(token);
             }
-            return NotFound("User not found");
+            catch (Exception e)
+            {
+            return StatusCode(500, e.Message);
+            }
         }
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("AddAdmin")]
+        public ActionResult AddAdmin([FromBody] UserLogin userLogin)
+        {
+            try
+            {
+                _userRepository.UserAdd(userLogin.Email, userLogin.Password, RoleId.Admin);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+            return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Authorize(Roles ="Admin")]
+        public ActionResult AddUser([FromBody] UserLogin userLogin)
+        {
+            try
+            {
+                _userRepository.UserAdd(userLogin.Email, userLogin.Password, RoleId.User);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+            return Ok();
+        }
+
 
         private string GenerateToken(User user)
         {

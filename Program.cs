@@ -33,7 +33,7 @@ namespace MessengerApplication
             builder.Host.ConfigureContainer<ContainerBuilder>(contaierBuilder =>
             {
                 contaierBuilder.RegisterType<UserRepository>().As<IUserRepository>();
-                contaierBuilder.Register(c => new MessengerContext(cfg.GetConnectionString("db"))).InstancePerDependency();
+               // contaierBuilder.Register(c => new MessengerContext(cfg.GetConnectionString("db"))).InstancePerDependency();
             });
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -49,8 +49,9 @@ namespace MessengerApplication
                     IssuerSigningKey = new RsaSecurityKey(GetPublicKey())
                 };
             });
-            builder.Services.AddScoped<IUserAuthenticationService, AuthenticationMock>();
+            //builder.Services.AddScoped<IUserAuthenticationService, AuthenticationMock>();
 
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             return builder.Build();
         }

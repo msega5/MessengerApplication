@@ -1,6 +1,10 @@
 ﻿using MessengerApplication.Abstraction;
+using MessengerApplication.Models;
 using MessengerApplication.Models.DTO;
+using MessengerApplication.Repo;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyModel;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace MessengerApplication.Controllers
@@ -29,5 +33,13 @@ namespace MessengerApplication.Controllers
         //{
         //    return Ok(_repository.Exists(email));
         //}
+
+        [HttpPost(template: "UsersList")]
+        public ActionResult<IEnumerable<UserDTO>> GetEmail()
+        {
+            return Ok(User);
+        }
+
+       
     }
 }

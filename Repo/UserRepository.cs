@@ -50,7 +50,14 @@ namespace MessengerApplication.Repo
                     }
                 }
 
+                
                 var user = new User();
+
+                if (email.SequenceEqual(user.Email))
+                {                  
+                        throw new Exception("Email is already registered");
+                }
+
                 user.Email = email;
                 user.RoleId = roleId;
 

@@ -70,8 +70,10 @@ namespace MessengerApplication.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
+        
+        
         [HttpPost]
+        [Route("AddUser")]
         [Authorize(Roles ="Admin")]
         public ActionResult AddUser([FromBody] UserLogin userLogin)
         {

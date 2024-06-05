@@ -7,11 +7,10 @@ namespace MessengerApplication.ChatApp
 {
     public class Client<T>
     {
-
-
         public readonly string _name;
         public IMessageSourceClient<T> _messageSource;
         public T remoteEndPoint;
+
         public Client(IMessageSourceClient<T> messageSourceClient, string name)
         {
             this._name = name;
@@ -20,6 +19,7 @@ namespace MessengerApplication.ChatApp
         }
 
         public UdpClient udpClientClient = new UdpClient();
+
         public async Task ClientListener()
         {
             while (true)
@@ -27,7 +27,7 @@ namespace MessengerApplication.ChatApp
                 try
                 {
                     var messageReceived = _messageSource.Receive(ref remoteEndPoint);
-                    Console.WriteLine($"Получено сообщение от {messageReceived.NickNameFrom}:");
+                    Console.WriteLine($"Получено сообщение от {messageReceived.EmailFrom}:");
                     Console.WriteLine(messageReceived.Text);
 
                     await Confirm(messageReceived, remoteEndPoint);
@@ -48,7 +48,7 @@ namespace MessengerApplication.ChatApp
         public void Register(T remoteEndPoint)
         {
             IPEndPoint ep = new IPEndPoint(IPAddress.Any, 0);
-            var message = new NetMessage() { NickNameFrom = _name, NickNameTo = null, Text = null };
+            var message = new NetMessage() { EmailFrom = _name, EmailTo = null, Text = null };
             _messageSource.SendAsync(message, remoteEndPoint);
             Console.WriteLine("Сообщение");
         }
@@ -67,7 +67,7 @@ namespace MessengerApplication.ChatApp
                     Console.Write("Введите сообщение: ");
                     var messageText = Console.ReadLine();
 
-                    var message = new NetMessage() { Command = Command.Message, NickNameFrom = _name };
+                    var message = new NetMessage() { Command = Command.Message, EmailFrom = _name };
 
                     await _messageSource.SendAsync(message, remoteEndPoint);
 

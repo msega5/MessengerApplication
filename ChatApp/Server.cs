@@ -23,13 +23,13 @@ namespace MessengerApplication.ChatApp
 
         private async Task Register(NetMessage message)
         {
-            Console.WriteLine($"Message register name = {message.NickNameFrom}");
+            Console.WriteLine($"Message register name = {message.EmailFrom}");
 
-            if (clients.TryAdd(message.NickNameFrom, _messageSource.CopyEndpoint(message.EndPoint)))
+            if (clients.TryAdd(message.EmailFrom, _messageSource.CopyEndpoint(message.EndPoint)))
             {
-                using (ChatContext context = new ChatContext())
+                using (MessengerContext context = new MessengerContext())
                 {
-                    context.Users.Add(new User() { FullName = message.NickNameFrom });
+                    context.Users.Add(new User() { Email = message.EmailFrom });
                     await context.SaveChangesAsync();
                 }
             }
@@ -37,13 +37,13 @@ namespace MessengerApplication.ChatApp
 
         private async Task RelyMessage(NetMessage message)
         {
-            if (clients.TryGetValue(message.NickNameTo, out T ep))
+            if (clients.TryGetValue(message.EmailTo, out T ep))
             {
                 int? id = 0;
-                using (var ctx = new ChatContext())
+                using (var ctx = new MessengerContext())
                 {
-                    var fromUser = ctx.Users.First(x => x.FullName == message.NickNameFrom);
-                    var toUser = ctx.Users.First(x => x.FullName == message.NickNameTo);
+                    var fromUser = ctx.Users.First(x => x.Email == message.EmailFrom);
+                    var toUser = ctx.Users.First(x => x.Email == message.EmailTo);
                     var msg = new Message { UserFrom = fromUser, UserTo = toUser, IsSent = false, Text = null };
                     ctx.Messages.Add(msg);
 
@@ -56,7 +56,7 @@ namespace MessengerApplication.ChatApp
 
                 await _messageSource.SendAsync(message, ep);
 
-                Console.WriteLine($"Message relied from = {message.NickNameFrom} to {message.NickNameTo}");
+                Console.WriteLine($"Message relied from = {message.EmailFrom} to {message.EmailTo}");
             }
             else
             {
@@ -67,7 +67,7 @@ namespace MessengerApplication.ChatApp
         {
             Console.WriteLine("Message confirmation id=" + id);
 
-            using (var ctx = new ChatContext())
+            using (var ctx = new MessengerContext())
             {
                 var msg = ctx.Messages.FirstOrDefault(x => x.MessageId == id);
 

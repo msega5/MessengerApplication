@@ -43,6 +43,7 @@ namespace MessengerApplication.ChatApp
         {
             message.Command = Command.Confirmation;
             await _messageSource.SendAsync(message, remoteEndPoint);
+            Console.WriteLine("Client Confirm");
         }
 
         public void Register(T remoteEndPoint)
@@ -50,7 +51,7 @@ namespace MessengerApplication.ChatApp
             IPEndPoint ep = new IPEndPoint(IPAddress.Any, 0);
             var message = new NetMessage() { EmailFrom = _name, EmailTo = null, Text = null };
             _messageSource.SendAsync(message, remoteEndPoint);
-            Console.WriteLine("Сообщение");
+            Console.WriteLine("Registered");
         }
 
         public async Task ClientSender()
@@ -61,7 +62,7 @@ namespace MessengerApplication.ChatApp
             {
                 try
                 {
-                    Console.Write("Введите имя получателя: ");
+                    Console.Write("Введите email получателя: ");
                     var nameTo = Console.ReadLine();
 
                     Console.Write("Введите сообщение: ");

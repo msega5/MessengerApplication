@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MessengerApplication.ChatCommon.Models;
+using MessengerApplication.Models;
 
-namespace MessengerApplication.ChatDB
+namespace MessengerApplication.Context
 {
     public class ChatContext : DbContext
     {

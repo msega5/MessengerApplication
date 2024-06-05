@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MessengerApplication.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace MessengerApplication.Models
+namespace MessengerApplication.Context
 {
-    public partial class MessengerContext : DbContext
+    public class MessengerContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -40,9 +41,6 @@ namespace MessengerApplication.Models
                     RoleId = e,
                     Email = e.ToString()
                 }));
-
-            OnModelCreatingPartial(modelBuilder);
         }
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using MessengerApplication.ChatCommon.Abstractions;
-using MessengerApplication.ChatCommon.Models;
+using MessengerApplication.Abstraction;
+using MessengerApplication.Models;
 
 namespace MessengerApplication.ChatApp
 {

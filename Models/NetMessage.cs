@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 
-namespace MessengerApplication.ChatCommon.Models
+namespace MessengerApplication.Models
 {
 
     public enum Command
@@ -29,7 +29,7 @@ namespace MessengerApplication.ChatCommon.Models
 
         public override string ToString()
         {
-            return $"{this.DateTime} получено сообщение {this.Text} от {this.NickNameFrom}";
+            return $"{DateTime} получено сообщение {Text} от {NickNameFrom}";
         }
     }
 }

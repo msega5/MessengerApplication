@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using MessengerApplication.ChatCommon.Models;
+using MessengerApplication.Models;
 
-namespace MessengerApplication.ChatCommon.Abstractions
+namespace MessengerApplication.Abstraction
 {
     public interface IMessageSourceServer<T>
     {

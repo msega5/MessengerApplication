@@ -1,6 +1,6 @@
-﻿using MessengerApplication.ChatCommon.Abstractions;
-using MessengerApplication.ChatCommon.Models;
-using MessengerApplication.ChatDB;
+﻿using MessengerApplication.Models;
+using MessengerApplication.Context;
+using MessengerApplication.Abstraction;
 
 namespace MessengerApplication.ChatApp
 {

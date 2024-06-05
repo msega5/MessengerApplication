@@ -1,6 +1,6 @@
-﻿using MessengerApplication.ChatCommon.Models;
+﻿using MessengerApplication.Models;
 
-namespace MessengerApplication.ChatCommon.Abstractions
+namespace MessengerApplication.Abstraction
 {
     public interface IMessageSourceClient<T>
     {

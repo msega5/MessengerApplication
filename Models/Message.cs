@@ -1,6 +1,4 @@
-﻿using MessengerApplication.Models;
-
-namespace MessengerApplication.ChatCommon.Models
+﻿namespace MessengerApplication.Models
 {
     public class Message
     {

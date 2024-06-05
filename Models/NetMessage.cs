@@ -1,23 +1,15 @@
 ﻿using System.Net;
 using System.Text.Json;
 
-namespace MessengerApplication.ChatCommon.Models
+namespace MessengerApplication.Models
 {
-
-    public enum Command
-    {
-        Register,
-        Message,
-        Confirmation
-    }
-
     public class NetMessage
     {
         public int? Id { get; set; }
-        public string Text { get; set; }
+        public string? Text { get; set; }
         public DateTime DateTime { get; set; }
-        public string? NickNameFrom { get; set; }
-        public string? NickNameTo { get; set; }
+        public string? EmailFrom { get; set; }
+        public string? EmailTo { get; set; }
         public IPEndPoint? EndPoint { get; set; }
         public Command Command { get; set; }
         public string SerializeMessageToJSON() => JsonSerializer.Serialize(this);
@@ -29,7 +21,7 @@ namespace MessengerApplication.ChatCommon.Models
 
         public override string ToString()
         {
-            return $"{this.DateTime} получено сообщение {this.Text} от {this.NickNameFrom}";
+            return $"{DateTime} получено сообщение {Text} от {EmailFrom}";
         }
     }
 }

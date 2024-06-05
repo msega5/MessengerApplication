@@ -1,6 +1,8 @@
 ﻿using MessengerApplication.Abstraction;
 using MessengerApplication.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 
 namespace MessengerApplication.Controllers
@@ -16,9 +18,11 @@ namespace MessengerApplication.Controllers
             _repository = repository;
         }
 
+        [AllowAnonymous]
         [HttpPost(template: "UsersList")]
         public ActionResult<IEnumerable<UserDTO>> GetEmail()
         {
+            
             return Ok(User);
         }       
     }

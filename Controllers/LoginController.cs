@@ -83,6 +83,22 @@ namespace MessengerApplication.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Route("DeleteUser")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteUser([FromBody] UserLogin userLogin)
+        {
+            try
+            {
+                _userRepository.UserDelete(userLogin.Email, userLogin.Password, RoleId.User);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+            return Ok();
+        }
+
 
         private string GenerateToken(User user)
         {

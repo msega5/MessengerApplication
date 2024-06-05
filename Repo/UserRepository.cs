@@ -68,5 +68,27 @@ namespace MessengerApplication.Repo
             }
         }
 
+        public void UserDelete(string email, string password, RoleId roleId)
+        {
+            using (var context = new MessengerContext())
+            {
+                if (roleId == RoleId.Admin)
+                {
+                    var c = context.Users.Count(x => x.RoleId == RoleId.Admin);
+                    if (c > 0)
+                    {
+                        throw new Exception("Only one admin may be registered");
+                    }
+                }
+
+                var user = new User();
+                user.Email = email;
+                user.RoleId = roleId;
+              
+                context.Remove(user);
+                context.SaveChanges();
+            }
+        }
+
     }
 }

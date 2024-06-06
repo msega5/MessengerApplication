@@ -5,6 +5,8 @@ using MessengerApplication.Repo;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using MessengerApplication.Context;
+using Microsoft.OpenApi.Models;
 
 namespace MessengerApplication
 {
@@ -16,7 +18,35 @@ namespace MessengerApplication
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(opt =>
+            {
+                opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter token",
+                    Name = "Autorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "Token",
+                    Scheme = "bearer"
+                });
+                opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type=ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
+            });
+
+
+
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             var config = new ConfigurationBuilder();
@@ -29,6 +59,11 @@ namespace MessengerApplication
             {
                 contaierBuilder.RegisterType<UserRepository>().As<IUserRepository>();
             });
+
+            //builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+            //{
+            //    containerBuilder.Register(c => new MessengerContext(cfg.GetConnectionString("db"))).InstancePerDependency();
+            //});
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

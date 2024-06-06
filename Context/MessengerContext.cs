@@ -6,7 +6,6 @@ namespace MessengerApplication.Context
     public class MessengerContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<Message> Messages { get; set; }
 
 
@@ -54,15 +53,15 @@ namespace MessengerApplication.Context
             });
 
             modelBuilder
-                .Entity<Role>()
+                .Entity<User>()
                 .Property(e => e.RoleId)
                 .HasConversion<int>();
 
             modelBuilder
-                .Entity<Role>()
+                .Entity<User>()
                 .HasData(Enum.GetValues(typeof(RoleId))
                              .Cast<RoleId>()
-                             .Select(e => new Role()
+                             .Select(e => new User()
                              {
                                  RoleId = e,
                                  Email = e.ToString()

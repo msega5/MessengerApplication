@@ -2,10 +2,12 @@
 using MessengerApplication.Models;
 using MessengerApplication.rsa;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.AspNet.Identity;
 
 
 namespace MessengerApplication.Controllers
@@ -44,7 +46,7 @@ namespace MessengerApplication.Controllers
             }
             catch (Exception e)
             {
-            return StatusCode(500, e.Message);
+                return StatusCode(500, e.Message);
             }
         }
 
@@ -65,11 +67,11 @@ namespace MessengerApplication.Controllers
             return Ok();
         }
 
-        
-        
+
+
         [HttpPost]
         [Route("AddUser")]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult AddUser([FromBody] UserLogin userLogin)
         {
             try
@@ -104,10 +106,12 @@ namespace MessengerApplication.Controllers
         {
             var securityKey = new RsaSecurityKey(RSATools.GetPrivateKey());
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.RsaSha256Signature);
+
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Email),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.RoleId.ToString())
             };
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
